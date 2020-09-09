@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+}
+
+group 'com.yang'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.netty:netty-all:4.1.51.Final'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
