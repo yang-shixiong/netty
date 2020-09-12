@@ -108,7 +108,7 @@ class NewNettyServerHandler extends ChannelInboundHandlerAdapter {
 
         // 2 用户自定义的定时场景
         System.out.println("schedule start time: " + LocalDateTime.now());
-        ctx.channel().eventLoop().schedule(() ->lateSend(ctx, "schedule"), 5, TimeUnit.SECONDS);
+        ctx.channel().eventLoop().schedule(() -> lateSend(ctx, "schedule"), 5, TimeUnit.SECONDS);
     }
 
     private void lateSend(ChannelHandlerContext ctx, String message) {
