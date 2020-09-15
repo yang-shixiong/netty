@@ -11,10 +11,8 @@ import java.util.List;
  */
 public class Test {
 
-}
-class Solution {
-    public List<Integer> inorderTraversal(TreeNode root) {
-        System.out.println(root.left)
-
+    public static void main(String[] args) {
+        System.out.println((-1&1));
     }
+
 }
