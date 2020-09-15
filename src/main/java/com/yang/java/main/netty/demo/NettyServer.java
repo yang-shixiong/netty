@@ -41,14 +41,14 @@ public class NettyServer {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         //addLast也就是在通道中标所有的handler字后面加（除了tail handler，这个是netty跪地必须要通道尾部）
-                        ch.pipeline().addLast(new NewNettyServerHandler());  // 这里面添加的类必须实现ChannelHandler
+                        ch.pipeline().addLast(new NettyServerHandler());  // 这里面添加的类必须实现ChannelHandler
                     }
                 });
         System.out.println("the server is ready ");
-        // 绑定端口生成future对象
-        ChannelFuture channelFuture = serverBootstrap.bind(9999);
-        // 对关闭通道进行监听
         try {
+            // 绑定端口生成future对象
+            ChannelFuture channelFuture = serverBootstrap.bind(9998).sync();
+            // 对关闭通道进行监听
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -95,6 +95,7 @@ class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         // 关闭
+        cause.printStackTrace();
         ctx.close();
     }
 }
