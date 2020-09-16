@@ -1,10 +1,10 @@
-///**
-// * Description:
-// *
-// * @author mark
-// * Date 2020/9/15
-// */
-// 第一步： AbstractBootstrap
+/**
+ * Description:
+ *
+ * @author mark
+ * Date 2020/9/15
+ */
+//第一步： AbstractBootstrap
 //public ChannelFuture bind(int inetPort) {
 //    return bind(new InetSocketAddress(inetPort));
 //}
@@ -159,14 +159,30 @@
 //                public final ChannelPipeline addLast(EventExecutorGroup group, String name, ChannelHandler handler) {
 //                    final AbstractChannelHandlerContext newCtx;
 //                    synchronized (this) {
-//                        checkMultiplicity(handler);
+//                          checkMultiplicity(handler);
 //
-//                        newCtx = newContext(group, filterName(name, handler), handler);
+//                          newCtx = newContext(group, filterName(name, handler), handler);
 //                        // 调用 addLast0
-//                        addLast0(newCtx);
-//                        ...
-//                    }
-//                    // 就是加入我们的上下文中
+//                          addLast0(newCtx);
+//                          // If the registered is false it means that the channel was not registered on an eventLoop yet.
+//                          // In this case we add the context to the pipeline and add a task that will call
+//                          // ChannelHandler.handlerAdded(...) once the channel is registered.
+//                          // 如果没有注册
+//                          if (!registered) {
+//                              newCtx.setAddPending();
+//                              // 将Context加入pipeline的待办任务中，就是DefaultChannelPipeline类中的callHandlerCallbackLater
+//                              callHandlerCallbackLater(newCtx, true);
+//                              return this;
+//                          }
+//
+//                          EventExecutor executor = newCtx.executor();
+//                          // 如果不在当前线程
+//                          if (!executor.inEventLoop()) {
+//                            // 将Context加入pipeline的待办任务中，就是DefaultChannelPipeline类中的callHandlerAddedInEventLoop
+//                              callHandlerAddedInEventLoop(newCtx, executor);
+//                              return this;
+//                              }
+//                      }
 //                    callHandlerAdded0(newCtx);
 //                    return this;
 //                }

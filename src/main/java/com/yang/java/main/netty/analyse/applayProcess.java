@@ -1,12 +1,12 @@
-//import io.netty.channel.*;
-//import io.netty.util.internal.ObjectUtil;
-//
-///**
-// * Description:
-// *
-// * @author mark
-// * Date 2020/9/15
-// */
+import io.netty.channel.*;
+import io.netty.util.internal.ObjectUtil;
+
+/**
+ * Description:
+ *
+ * @author mark
+ * Date 2020/9/15
+ */
 ////第一步：NioEventLoop 连接进来的地方
 //private void processSelectedKeys(){
 //        ...
@@ -99,15 +99,25 @@
 //    }
 //
 //
-//    // 第七步：DefaultChannelPipeline，主要作用就是对外接口
+//    // 第七步：DefaultChannelPipeline，主要作用就是对外接口，并获取下一个处理器
 //    @Override
 //    public final ChannelPipeline fireChannelRead(Object msg) {
-//        // 调用第八步
+//        // 获取下一个处理器并调用第八步
+//          /*
+//          private AbstractChannelHandlerContext findContextInbound(int mask) {
+//                AbstractChannelHandlerContext ctx = this;
+//                EventExecutor currentExecutor = executor();
+//                do {
+//                    ctx = ctx.next;
+//                } while (skipContext(ctx, currentExecutor, mask, MASK_ONLY_INBOUND));
+//                return ctx;
+//            }
+//           */
 //        AbstractChannelHandlerContext.invokeChannelRead(head, msg);
 //        return this;
 //    }
 //
-//    // 第八步：AbstractChannelHandlerContext，这里面就是开始进行传递给下一个
+//    // 第八步：AbstractChannelHandlerContext，从名字就可以看出这里面AbstractChannelHandlerContext就是下一个ChannelHandlerContext
 //    static void invokeChannelRead(final AbstractChannelHandlerContext next, Object msg) {
 //        final Object m = next.pipeline.touch(ObjectUtil.checkNotNull(msg, "msg"), next);
 //        // 从这里可以知道，这个就是获取下一个执行器
@@ -131,7 +141,7 @@
 //    private void invokeChannelRead(Object msg) {
 //        if (invokeHandler()) {
 //            try {
-//                // 下属方法进去下一个处理的（类似于第七步），等到所有的处理器执行完毕（接下来只看ServerBootstrap的ChannelRead，见第九-2步），就会返回第四步
+//                // 下属方法进去处理的消息，等到所有的处理器执行完毕（接下来只看ServerBootstrap的ChannelRead，见第九-2步），就会返回第四步
 //                ((ChannelInboundHandler) handler()).channelRead(this, msg);
 //            } catch (Throwable t) {
 //                invokeExceptionCaught(t);
@@ -144,7 +154,7 @@
 //    // 第九-2步：ServerBootstrap
 //    @Override
 //    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-//        // 将msg强转，实际上这个msg的类型就是NioSocketChannel
+//        // 将msg强转，实际上这个msg的类型就是NioSocketChannel（因为在接受是传递的就是NioSocketChannel）
 //        final Channel child = (Channel) msg;
 //        // 加入在初始化ServerBootstrap的childHandler
 //        child.pipeline().addLast(childHandler);
